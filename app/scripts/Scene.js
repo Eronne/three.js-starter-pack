@@ -4,7 +4,9 @@
 // TODO: add Dat.GUI
 // TODO: add Stats
 
-let Stats = require('stats.js')
+let Stats = require('stats.js'),
+    OrbitControls = require('three-orbit-controls')(THREE),
+    debug = true
 
 export default class Scene {
 
@@ -14,6 +16,10 @@ export default class Scene {
         this.createScene()
         this.createMesh()
         this.renderer()
+
+        if (debug) {
+            this.debug()
+        }
         
 
     	window.addEventListener('resize', this.onWindowResize.bind(this), false);
@@ -60,6 +66,13 @@ export default class Scene {
 
         this.renderer.render( this.scene, this.camera );
         this.stats.end();
+    }
+
+    debug () {
+        let axisHelper = new THREE.AxisHelper( 20 )
+        this.scene.add( axisHelper )
+
+        let controls = new OrbitControls(this.camera, this.container)       
     }
 
     onWindowResize() {
