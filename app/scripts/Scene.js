@@ -4,9 +4,13 @@
 // TODO: add Dat.GUI
 // TODO: add Stats
 
+let Stats = require('stats.js')
+
 export default class Scene {
 
     constructor() {
+        this.importStatsJs()
+
         this.createScene()
         this.createMesh()
         this.renderer()
@@ -16,6 +20,12 @@ export default class Scene {
         this.onWindowResize();
 
         this.renderer.animate( this.render.bind(this) );
+    }
+
+    importStatsJs () {
+        this.stats = new Stats();
+        this.stats.showPanel( 0 );
+        document.body.appendChild( this.stats.dom );
     }
 
     createScene () {
@@ -43,11 +53,13 @@ export default class Scene {
     }
 
     render() {
+        this.stats.begin();
 
         this.mesh.rotation.x += 0.003;
         this.mesh.rotation.y += 0.005;
 
-    	this.renderer.render( this.scene, this.camera );
+        this.renderer.render( this.scene, this.camera );
+        this.stats.end();
     }
 
     onWindowResize() {
